@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jewellery Shop Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #receipt-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #receipt-display {
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: left;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .editable {
+            background-color: #FFFF99;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jewellery Shop Receipt</h1>
+    <div id="receipt-form">
+        <form onsubmit="generateReceipt(); return false;">
+            <div class="form-group">
+                <label for="customer-name">Customer Name:</label>
+                <input type="text" id="customer-name" required>
+            </div>
+            <table id="item-table">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Item Price (Rs.)</th>
+                        <th>Item Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="editable"><input type="text" name="item-name" required></td>
+                        <td class="editable"><input type="number" name="item-price" required></td>
+                        <td class="editable"><input type="number" name="item-quantity" required></td>
+                        <td><button type="button" onclick="removeItem(this)">Remove</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" onclick="addItem()">Add Item</button>
+            <button type="submit">Generate Receipt</button>
+        </form>
+    </div>
+    <div id="receipt-display" style="display: none;">
+        <h2>Receipt</h2>
+        <p><strong>Customer Name:</strong> <span id="display-customer-name"></span></p>
+        <table id="receipt-items">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Item Price (Rs.)</th>
+                    <th>Item Quantity</th>
+                    <th>Item Total (Rs.)</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <p><strong>Total Cost:</strong> Rs.<span id="display-total-cost"></span></p>
+    </div>
+
+    <script>
+        function generateReceipt() {
+            const customerName = document.getElementById("customer-name").value;
+            document.getElementById("display-customer-name").textContent = customerName;
+
+            const receiptItemsTable = document.getElementById("receipt-items");
+            const receiptItemsBody = receiptItemsTable.getElementsByTagName("tbody")[0];
+            const itemRows = document.getElementsByName("item-name");
+
+            let totalCost = 0;
+
+            for (let i = 0; i < itemRows.length; i++) {
+                const itemName = itemRows[i].value;
+                const itemPrice = parseFloat(document.getElementsByName("item-price")[i].value);
+                const itemQuantity = parseInt(document.getElementsByName("item-quantity")[i].value);
+                const itemTotal = itemPrice * itemQuantity;
+
+                totalCost += itemTotal;
+
+                const newRow = receiptItemsBody.insertRow();
+                newRow.innerHTML = `
+                    <td>${itemName}</td>
+                    <td>${itemPrice.toFixed(2)}</td>
+                    <td>${itemQuantity}</td>
+                    <td>${itemTotal.toFixed(2)}</td>
+                `;
+            }
+
+            document.getElementById("display-total-cost").textContent = totalCost.toFixed(2);
+
+            document.getElementById("receipt-form").style.display = "none";
+            document.getElementById("receipt-display").style.display = "block";
+        }
+
+        function addItem() {
+            const itemTable = document.getElementById("item-table").getElementsByTagName("tbody")[0];
+            const newRow = itemTable.insertRow();
+            newRow.innerHTML = `
+                <td class="editable"><input type="text" name="item-name" required></td>
+                <td class="editable"><input type="number" name="item-price" required></td>
+                <td class="editable"><input type="number" name="item-quantity" required></td>
+                <td><button type="button" onclick="removeItem(this)">Remove</button></td>
+            `;
+        }
+
+        function removeItem(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+    </script>
+</body>
+</html>

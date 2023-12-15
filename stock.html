@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jewellery Stock Management</title>
+    <style>
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        body{
+           background-color: rgb(55, 52, 52);
+           
+
+        }
+
+        th, td {
+            border: 3px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f6f6f6;
+        }
+        tbody {
+            background-color: #f9f5f5;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button.edit {
+            background-color: #28a745;
+        }
+
+        button.delete {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body >
+    <h1 style="color: #fff;">Jewellery Stock Management</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price(Rs.)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="stock-list">
+            <!-- Table rows will be populated dynamically with JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        function addRow() {
+            const stockList = document.getElementById("stock-list");
+            const newRow = stockList.insertRow();
+            newRow.innerHTML = `
+                <td contenteditable="true">Product Name</td>
+                <td contenteditable="true">0</td>
+                <td contenteditable="true">0.00</td>
+                <td>
+                    <button class="edit" onclick="editRow(this)">Edit</button>
+                    <button class="delete" onclick="deleteRow(this)">Delete</button>
+                </td>
+            `;
+        }
+
+        function editRow(button) {
+            const row = button.parentElement.parentElement;
+            const cells = row.querySelectorAll("td");
+            cells.forEach((cell, index) => {
+                if (index !== 3) {
+                    cell.contentEditable = "true";
+                }
+            });
+            button.textContent = "Save";
+            button.className = "edit";
+            button.onclick = function () {
+                saveRow(this);
+            };
+        }
+
+        function saveRow(button) {
+            const row = button.parentElement.parentElement;
+            const cells = row.querySelectorAll("td");
+            cells.forEach((cell) => {
+                cell.contentEditable = "false";
+            }
+            );
+            button.textContent = "Edit";
+            button.className = "edit";
+            button.onclick = function () {
+                editRow(this);
+            };
+        }
+
+        function deleteRow(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+        }
+    </script>
+
+    <button onclick="addRow()">Add New Item</button>
+</body>
+</html>

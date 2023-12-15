@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jewelry Shop Bill Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #payment-form {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+s
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 25px;
+            cursor: pointer;
+        }
+
+        #payment-result {
+            max-width: 300px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jewellery Shop Bill Payment</h1>
+    <div id="payment-form">
+        <form onsubmit="processPayment(); return false;">
+            <div class="form-group">
+                <label for="customer-name">Customer Name:</label>
+                <input type="text" id="customer-name" required>
+            </div>
+            <div class="form-group">
+                <label for="total-amount">Total Amount ($):</label>
+                <input type="number" id="total-amount" required>
+            </div>
+            <div class="form-group">
+                <label for="payment-method">Payment Method:</label>
+                <select id="payment-method" required>
+                    <option value="credit">Credit Card</option>
+                    <option value="debit">Debit Card</option>
+                    <option value="paypal">PayPal</option>
+                </select>
+            </div>
+            <button type="submit">Make Payment</button>
+        </form>
+    </div>
+    <div id="payment-result" style="display: none;">
+        <h2>Payment Receipt</h2>
+        <p><strong>Customer Name:</strong> <span id="display-customer-name"></span></p>
+        <p><strong>Total Amount:</strong> $<span id="display-total-amount"></span></p>
+        <p><strong>Payment Method:</strong> <span id="display-payment-method"></span></p>
+        <p>Payment was successful.</p>
+    </div>
+
+    <script>
+        function processPayment() {
+            const customerName = document.getElementById("customer-name").value;
+            const totalAmount = parseFloat(document.getElementById("total-amount").value);
+            const paymentMethod = document.getElementById("payment-method").value;
+
+            document.getElementById("display-customer-name").textContent = customerName;
+            document.getElementById("display-total-amount").textContent = totalAmount.toFixed(2);
+            document.getElementById("display-payment-method").textContent = paymentMethod;
+
+            document.getElementById("payment-form").style.display = "none";
+            document.getElementById("payment-result").style.display = "block";
+        }
+    </script>
+</body>
+</html>
